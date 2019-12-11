@@ -1,7 +1,4 @@
-package chat_package_server;
-
-import chat_package_network.TCPConnection;
-import chat_package_network.TCPConnetionRx;
+package yuraga.chat;
 
 import java.net.ServerSocket;
 import java.util.ArrayList;
@@ -43,19 +40,18 @@ public class ChatServer implements TCPConnetionRx {
 
     }
 
-    private void sendToAll(String value){
+    private void sendToAll(String value) {
         System.out.println(value);
-        for (TCPConnection con : connections){
+        for (TCPConnection con : connections) {
             con.sendMassage(value); // пробежались по всемм соединеним и передали нашу строку каждом из них
         }
     }
 
 
-
-    private ChatServer(){
+    private ChatServer() {
         System.out.println("Server running...");
-        try (ServerSocket serverSocket = new ServerSocket(8189)){ //создали серсерсокет который слушает порт
-            while (true){
+        try (ServerSocket serverSocket = new ServerSocket(8189)) { //создали серсерсокет который слушает порт
+            while (true) {
                 //суть серверного цикла
                 //далее в бесконечном цикле мы устанавливаем соединениеб , как только устанавливается соединение
                 // мы создаем TCPСonnection, передаем в его конструктор аобьект сокета, который вызывает это соединение(с помощтю метода accept)
@@ -63,14 +59,12 @@ public class ChatServer implements TCPConnetionRx {
                 try {
                     new TCPConnection(this, serverSocket.accept());// на каждое соединение нуно создать новый экземпляр TCPСonnection
 
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     System.out.println("TCPConnection exception - " + e); // если тчо то случися при подключении с клиентом
                 }
             }
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new RuntimeException(e); // поднимаем исклюение доверху и роняем приложение
         }
     }
